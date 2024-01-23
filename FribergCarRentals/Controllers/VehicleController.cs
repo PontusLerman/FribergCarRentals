@@ -5,43 +5,67 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FribergCarRentals.Controllers
 {
-    public class CustomerController : Controller
+    public class VehicleController : Controller
     {
-        private readonly ICustomer customerRepository;
+        private readonly IVehicle vehicleRepository;
 
-        public CustomerController(ICustomer customerRepository)
+        public VehicleController(IVehicle vehicleRepository)
         {
-            this.customerRepository = customerRepository;
+            this.vehicleRepository = vehicleRepository;
         }
-
-        // GET: UserController
+        // GET: VehicleController
         public ActionResult Index()
         {
-            return View(customerRepository.GetAll());
+            return View(vehicleRepository.GetAll());
         }
 
-        // GET: UserController/Details/5
+        // GET: VehicleController/Details/5
         public ActionResult Details(int id)
         {
-            return View(customerRepository.GetById(id));
+            return View(vehicleRepository.GetById(id));
         }
 
-        // GET: UserController/Create
+        // GET: VehicleController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: UserController/Create
+        // POST: VehicleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Customer customer)
+        public ActionResult Create(Vehicle vehicle)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                {
+                    vehicleRepository.Add(vehicle);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: VehicleController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View(vehicleRepository.GetById(id));
+        }
+
+        // POST: VehicleController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Vehicle vehicle)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    customerRepository.Add(customer);                    
+                    vehicleRepository.Update(vehicle);
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -51,45 +75,20 @@ namespace FribergCarRentals.Controllers
             }
         }
 
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View(customerRepository.GetById(id));
-        }
-
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Customer customer)
-        {
-            try
-            {
-                if(ModelState.IsValid) 
-                { 
-                    customerRepository.Update(customer);
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController/Delete/5
+        // GET: VehicleController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(customerRepository.GetById(id));
+            return View(vehicleRepository.GetById(id));
         }
 
-        // POST: UserController/Delete/5
+        // POST: VehicleController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Customer customer)
+        public ActionResult Delete(Vehicle vehicle)
         {
             try
             {
-                customerRepository.Delete(customer); 
+                vehicleRepository.Delete(vehicle);
                 return RedirectToAction(nameof(Index));
             }
             catch

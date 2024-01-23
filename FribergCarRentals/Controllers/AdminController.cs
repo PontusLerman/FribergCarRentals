@@ -5,43 +5,67 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FribergCarRentals.Controllers
 {
-    public class CustomerController : Controller
+    public class AdminController : Controller
     {
-        private readonly ICustomer customerRepository;
+        private readonly IAdmin adminRepository;
 
-        public CustomerController(ICustomer customerRepository)
+        public AdminController(IAdmin adminRepository)
         {
-            this.customerRepository = customerRepository;
+            this.adminRepository = adminRepository;
         }
-
-        // GET: UserController
+        // GET: AdminController
         public ActionResult Index()
         {
-            return View(customerRepository.GetAll());
+            return View(adminRepository.GetAll());
         }
 
-        // GET: UserController/Details/5
+        // GET: AdminController/Details/5
         public ActionResult Details(int id)
         {
-            return View(customerRepository.GetById(id));
+            return View(adminRepository.GetById(id));
         }
 
-        // GET: UserController/Create
+        // GET: AdminController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: UserController/Create
+        // POST: AdminController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Customer customer)
+        public ActionResult Create(Admin admin)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                {
+                    adminRepository.Add(admin);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: AdminController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View(adminRepository.GetById(id));
+        }
+
+        // POST: AdminController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Admin admin)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    customerRepository.Add(customer);                    
+                    adminRepository.Update(admin);
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -51,45 +75,20 @@ namespace FribergCarRentals.Controllers
             }
         }
 
-        // GET: UserController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View(customerRepository.GetById(id));
-        }
-
-        // POST: UserController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Customer customer)
-        {
-            try
-            {
-                if(ModelState.IsValid) 
-                { 
-                    customerRepository.Update(customer);
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UserController/Delete/5
+        // GET: AdminController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View(customerRepository.GetById(id));
+            return View(adminRepository.GetById(id));
         }
 
-        // POST: UserController/Delete/5
+        // POST: AdminController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Customer customer)
+        public ActionResult Delete(Admin admin)
         {
             try
             {
-                customerRepository.Delete(customer); 
+                adminRepository.Delete(admin);
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -14,6 +14,8 @@ namespace FribergCarRentals
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=FredrikCarRentalsDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"));
             builder.Services.AddTransient<ICustomer, CustomerRepository>();
+            builder.Services.AddTransient<IAdmin, AdminRepository>();
+            builder.Services.AddTransient<IVehicle, VehicleRepository>();
 
             var app = builder.Build();
 

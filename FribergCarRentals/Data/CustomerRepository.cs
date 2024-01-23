@@ -13,9 +13,16 @@ namespace FribergCarRentals.Data
 
         public void Add(Customer customer)
         {
-            applicationDbContext.Add(customer);
+            applicationDbContext.Customers.Add(customer);
             applicationDbContext.SaveChanges();
         }
+
+        public void Delete(Customer customer)
+        {
+            applicationDbContext.Customers.Remove(customer);
+            applicationDbContext.SaveChanges();
+        }
+
         public IEnumerable<Customer> GetAll()
         {
             return applicationDbContext.Customers.OrderBy(x => x.LastName);
@@ -24,6 +31,12 @@ namespace FribergCarRentals.Data
         public Customer GetById(int id)
         {
             return applicationDbContext.Customers.FirstOrDefault(x=>x.Id==id);
+        }
+
+        public void Update(Customer customer)
+        {
+            applicationDbContext.Customers.Update(customer);
+            applicationDbContext.SaveChanges();
         }
     }
 }
